@@ -21,6 +21,7 @@ import { useReducer, useState } from "react";
 
 export default function InviteUsers() {
   const [inputValue, setInputValue] = useState("");
+  const [animation, setAnimation] = useState(false);
 
   const reducer = (state, action) => {
     if (action.type === "ADD_EMAİL") {
@@ -46,7 +47,7 @@ export default function InviteUsers() {
       const updatedEmails = state.emails.filter(
         (email) => email !== action.payload
       );
-      return { ...state, emails: updatedEmails };
+      return { ...state, emails: updatedEmails, error: null, success: null };
     }
   };
 
@@ -59,6 +60,8 @@ export default function InviteUsers() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setInputValue("");
+    setAnimation(true);
+    setTimeout(() => setAnimation(false), 300);
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -76,7 +79,10 @@ export default function InviteUsers() {
             id="email"
             className={`px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
               state.error && "animate-pulse"
-            } ${state.success && "animate-bounce"}`}
+            } ${
+              state.success &&
+              "transtion-all animate-bounce  duration-200 ease-in-out"
+            }`}
             placeholder="E-posta giriniz"
             onChange={(e) => setInputValue(e.target.value)}
             value={inputValue}
